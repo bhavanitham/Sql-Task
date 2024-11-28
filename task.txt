@@ -1,0 +1,64 @@
+CREATE DATABASE ecommerce;
+
+-- Create Customer Table & Give Sample Values--
+CREATE TABLE customers (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    address VARCHAR(255) NOT NULL
+);
+
+INSERT INTO customers (name, email, address)
+VALUES 
+    ('Arun Kumar', 'arunkemar@example.com', '3/4 Main road, Madurai'),
+    ('Bala', 'bala@example.com', '21/9 opposite street, Salem'),
+    ('Ashok', 'ashok@example.com', '65/9 grand hotel opposite, Namakkal');
+
+-- Create Product Table & Give Sample Values--
+CREATE TABLE products (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
+    description TEXT
+);
+
+INSERT INTO products (name, price, description)
+VALUES 
+    ('Product A', 25.00, 'A high-quality item'),
+    ('Product B', 30.00, 'An excellent product'),
+    ('Product C', 40.00, 'A premium product');
+
+-- Create Order Table & Give Sample Values--
+CREATE TABLE orders (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    customer_id INT,
+    order_date DATE NOT NULL,
+    total_amount DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (customer_id) REFERENCES customers(id)
+);
+
+INSERT INTO orders (customer_id, order_date, total_amount)
+VALUES 
+    (1, '2024-11-01', 100.00),
+    (2, '2024-11-10', 150.00),
+    (3, '2024-11-20', 200.00);
+
+-- Create Order Item Table & Give Sample Values--
+CREATE TABLE order_items (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    order_id INT,
+    product_id INT,
+    quantity INT NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (order_id) REFERENCES orders(id),
+    FOREIGN KEY (product_id) REFERENCES products(id)
+);
+
+INSERT INTO order_items (order_id, product_id, quantity, price)
+VALUES 
+    (1, 1, 2, 25.00),
+    (1, 2, 1, 30.00),
+    (2, 1, 3, 25.00),
+    (2, 3, 2, 40.00),
+    (3, 2, 4, 30.00),
+    (3, 3, 3, 40.00);
